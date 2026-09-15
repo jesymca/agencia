@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turismo Experiencial Venezuela | Guiatura Profesional Certificada</title>
-    
-    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+    <title>Turismo Experiencial Venezuela | Vive el Alma del Caribe</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans, Playfair Display & Syne -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,700;1,800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -22,11 +22,14 @@
                 extend: {
                     colors: {
                         brand: {
-                            fuchsia: '#ec4899',
+                            ink: '#050514',
+                            night: '#0a0a23',
+                            violet: '#1a0b3d',
+                            fuchsia: '#ff2d6f',
                             rose: '#f43f5e',
-                            navy: '#0f172a',
-                            deepBlue: '#1e3a8a',
-                            sky: '#0284c7',
+                            cyan: '#06e0ff',
+                            sky: '#0ea5ff',
+                            gold: '#fcd34d',
                             sand: '#fef3c7',
                             sunset: '#fb7185'
                         }
@@ -34,6 +37,7 @@
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         serif: ['"Playfair Display"', 'serif'],
+                        display: ['"Syne"', 'sans-serif'],
                     }
                 }
             }
@@ -41,266 +45,583 @@
     </script>
 
     <style>
+        :root {
+            --bg-ink: #050514;
+            --bg-night: #0a0a23;
+            --bg-violet: #1a0b3d;
+            --neon-pink: #ff2d6f;
+            --neon-cyan: #06e0ff;
+            --neon-gold: #fcd34d;
+        }
+
+        * { -webkit-tap-highlight-color: transparent; }
+
+        html, body { background: var(--bg-ink); color: #f8fafc; }
+
+        /* Scroll progress bar */
+        #scrollProgress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+            background: linear-gradient(90deg, #ff2d6f 0%, #06e0ff 50%, #fcd34d 100%);
+            z-index: 100; transition: width 0.05s linear;
+            box-shadow: 0 0 12px rgba(255, 45, 111, 0.7);
+        }
+
+        /* Custom cursor blob (desktop) */
+        .cursor-blob {
+            position: fixed; pointer-events: none; z-index: 9999;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,45,111,0.85) 0%, rgba(6,224,255,0.4) 60%, transparent 100%);
+            mix-blend-mode: screen;
+            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), width 0.2s, height 0.2s;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        @media (min-width: 1024px) {
+            .cursor-blob { display: block; }
+            body, a, button { cursor: none; }
+        }
+
+        /* Glassmorphism nav */
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            background: rgba(10, 10, 35, 0.55);
+            backdrop-filter: blur(22px) saturate(180%);
+            -webkit-backdrop-filter: blur(22px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-        .hero-gradient {
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.8) 100%);
+        .glass-nav.scrolled {
+            background: rgba(5, 5, 20, 0.85);
+            box-shadow: 0 8px 32px rgba(255, 45, 111, 0.15);
         }
+
+        /* Cinematic hero */
+        .hero-overlay {
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(255, 45, 111, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(6, 224, 255, 0.30) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(5, 5, 20, 0.45) 0%, rgba(5, 5, 20, 0.55) 50%, rgba(5, 5, 20, 0.95) 100%);
+        }
+
+        /* Animated gradient text */
         .text-gradient {
-            background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+            background: linear-gradient(120deg, #ff2d6f 0%, #fcd34d 25%, #06e0ff 50%, #ff2d6f 75%, #fcd34d 100%);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-flow 8s ease infinite;
         }
-        .badge-pulse {
-            animation: pulse-glow 2.5s infinite;
+        @keyframes gradient-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
+
+        /* Pulse badge */
+        .badge-pulse { animation: pulse-glow 2.8s infinite; }
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
-            50% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 45, 111, 0.55); }
+            50% { box-shadow: 0 0 0 14px rgba(255, 45, 111, 0); }
         }
-        .destination-card:hover .dest-img {
-            transform: scale(1.08);
+
+        /* Magnetic CTA glow */
+        .cta-glow {
+            position: relative;
+            isolation: isolate;
         }
+        .cta-glow::before {
+            content: '';
+            position: absolute; inset: -2px; z-index: -1;
+            background: linear-gradient(120deg, #ff2d6f, #fcd34d, #06e0ff, #ff2d6f);
+            background-size: 300% 300%;
+            border-radius: inherit;
+            filter: blur(14px); opacity: 0.55;
+            animation: gradient-flow 6s ease infinite;
+            transition: opacity 0.3s;
+        }
+        .cta-glow:hover::before { opacity: 0.95; }
+
+        /* Floating animated blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.45;
+            pointer-events: none;
+            animation: blob-float 18s ease-in-out infinite;
+        }
+        @keyframes blob-float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -30px) scale(1.1); }
+            66% { transform: translate(-30px, 40px) scale(0.95); }
+        }
+
+        /* Marquee strip */
+        .marquee {
+            display: flex; gap: 4rem; white-space: nowrap;
+            animation: marquee 28s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Reveal on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-stagger > * {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+        .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; }
+        .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; }
+        .reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; }
+        .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.45s; }
+        .reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.55s; }
+        .reveal-stagger.visible > *:nth-child(7) { transition-delay: 0.65s; }
+        .reveal-stagger.visible > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Destination card 3D tilt */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            will-change: transform;
+        }
+        .tilt-card .tilt-inner {
+            transform: translateZ(40px);
+            transform-style: preserve-3d;
+        }
+        .tilt-card .dest-img {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tilt-card:hover .dest-img {
+            transform: scale(1.12);
+        }
+        .tilt-card:hover {
+            box-shadow: 0 30px 60px -15px rgba(255, 45, 111, 0.35), 0 0 0 1px rgba(255, 45, 111, 0.2);
+        }
+
+        /* Animated border gradient */
+        .gradient-border {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute; inset: 0;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 45, 111, 0.6), rgba(6, 224, 255, 0.6), rgba(252, 211, 77, 0.4));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            border-radius: inherit;
+            opacity: 0.4;
+            transition: opacity 0.4s;
+        }
+        .gradient-border:hover::before { opacity: 1; }
+
+        /* Stat counter glow */
+        .stat-glow { text-shadow: 0 0 30px currentColor; }
+
+        /* Filter pills */
+        .filter-btn {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .filter-btn.active {
+            background: linear-gradient(120deg, #ff2d6f, #f43f5e);
+            color: white;
+            box-shadow: 0 6px 20px rgba(255, 45, 111, 0.45);
+        }
+
         /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #050514; }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: linear-gradient(180deg, #ff2d6f, #06e0ff);
             border-radius: 9999px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ec4899;
+        ::-webkit-scrollbar-thumb:hover { background: #ff2d6f; }
+
+        /* Selection */
+        ::selection { background: #ff2d6f; color: #fff; }
+
+        /* Float plane animation in hero */
+        @keyframes float-up-down {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
         }
+        .float-anim { animation: float-up-down 6s ease-in-out infinite; }
+
+        /* Number flip subtle */
+        .counter { font-variant-numeric: tabular-nums; }
+
+        /* Image hover reveal text on cards */
+        .img-overlay-text {
+            transform: translateY(20px); opacity: 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tilt-card:hover .img-overlay-text {
+            transform: translateY(0); opacity: 1;
+        }
+
+        /* Sticky planner glow */
+        .planner-glow {
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 45, 111, 0.25), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(6, 224, 255, 0.22), transparent 40%),
+                linear-gradient(135deg, #0a0a23 0%, #1a0b3d 50%, #050514 100%);
+        }
+
+        /* Smooth hover scale */
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 40px -12px rgba(255, 45, 111, 0.4);
+        }
+
+        /* Noise overlay for premium feel */
+        .noise-bg::after {
+            content: '';
+            position: absolute; inset: 0; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            mix-blend-mode: overlay;
+        }
+
+        /* Image clip */
+        .clip-slant { clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%); }
+
+        /* Smooth scroll for anchor */
+        html { scroll-behavior: smooth; }
+        section { scroll-margin-top: 80px; }
     </style>
 </head>
-<body class="font-sans text-slate-800 bg-slate-50 antialiased overflow-x-hidden selection:bg-pink-500 selection:text-white">
+<body class="font-sans antialiased overflow-x-hidden bg-brand-ink text-slate-100 selection:bg-pink-500 selection:text-white">
 
-    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass-nav border-b border-slate-100 shadow-sm" id="navbar">
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollProgress"></div>
+
+    <!-- Custom Cursor Follower -->
+    <div class="cursor-blob" id="cursorBlob"></div>
+
+    <!-- Animated background blobs (global) -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="blob" style="background: #ff2d6f; width: 500px; height: 500px; top: -10%; left: -10%;"></div>
+        <div class="blob" style="background: #06e0ff; width: 400px; height: 400px; top: 40%; right: -10%; animation-delay: -6s;"></div>
+        <div class="blob" style="background: #fcd34d; width: 350px; height: 350px; bottom: -10%; left: 30%; animation-delay: -12s; opacity: 0.25;"></div>
+    </div>
+
+    <!-- ============ NAVBAR ============ -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-500 glass-nav" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Logo with Sun & Waves Silhouette concept -->
+                <!-- Logo -->
                 <a href="#inicio" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-transform">
-                        <!-- Custom SVG Minimalist Silhouette -->
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-pink-500/40 group-hover:rotate-12 group-hover:scale-105 transition-transform duration-500">
                         <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="7" r="3.5" fill="currentColor" fill-opacity="0.9"></circle>
+                            <circle cx="12" cy="7" r="3.5" fill="currentColor" fill-opacity="0.95"></circle>
                             <path d="M12 1v2M12 11v1M7 7H5M19 7h-2M6.5 3.5l1.5 1.5M16 10.5l1.5 1.5M6.5 10.5L8 9M16 3.5l1.5-1.5"></path>
                             <path d="M2 17c3-2 6 2 10 0 4-2 7 2 10 0" stroke-width="2.2"></path>
                             <path d="M2 21c3-2 6 2 10 0 4-2 7 2 10 0" stroke-width="2.2"></path>
                         </svg>
                     </div>
                     <div>
-                        <span class="block text-xl font-bold tracking-tight text-slate-900 leading-none">
-                            EXPERIENCIA <span class="text-pink-500 font-extrabold">VENEZUELA</span>
+                        <span class="block text-xl font-extrabold tracking-tight text-white leading-none font-display">
+                            EXPERIENCIA <span class="text-gradient">VENEZUELA</span>
                         </span>
-                        <span class="text-[11px] font-semibold tracking-wider uppercase text-blue-600">
+                        <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-cyan-300">
                             Guiatura Turística Profesional
                         </span>
                     </div>
                 </a>
 
-                <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-                    <a href="#destinos" class="hover:text-pink-500 transition-colors">Destinos de Autor</a>
-                    <a href="#experiencia" class="hover:text-pink-500 transition-colors">¿Por Qué con Guía?</a>
-                    <a href="#circuitos" class="hover:text-pink-500 transition-colors">Circuitos & Museos</a>
-                    <a href="#guias" class="hover:text-pink-500 transition-colors">Nuestros Guías</a>
-                    <a href="#cotizador" class="hover:text-pink-500 transition-colors">Diseñar Viaje</a>
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+                    <a href="#destinos" class="hover:text-pink-400 transition-colors relative group">
+                        Destinos de Autor
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#experiencia" class="hover:text-pink-400 transition-colors relative group">
+                        ¿Por Qué con Guía?
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#guias" class="hover:text-pink-400 transition-colors relative group">
+                        Nuestros Guías
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#cotizador" class="hover:text-pink-400 transition-colors relative group">
+                        Diseñar Viaje
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                    </a>
                 </nav>
 
-                <!-- Action CTA & WhatsApp Trigger -->
+                <!-- Desktop CTA -->
                 <div class="hidden lg:flex items-center gap-3">
-                    <button onclick="toggleContactModal()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg hover:brightness-105 active:scale-95 transition-all flex items-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <button onclick="toggleContactModal()" class="cta-glow px-6 py-2.5 rounded-full bg-brand-ink text-white text-xs font-bold uppercase tracking-widest border border-white/10 hover:scale-105 active:scale-95 transition-transform duration-300 flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-sm text-cyan-300"></i>
                         <span>Contactar Guía</span>
                     </button>
                 </div>
 
-                <!-- Mobile Menu Hamburger -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors">
+                <!-- Mobile menu button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2.5 rounded-xl text-white hover:bg-white/10 transition-colors">
                     <i class="fa-solid fa-bars text-xl" id="menuIcon"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Drawer -->
-        <div id="mobileDrawer" class="hidden md:hidden bg-white/95 border-b border-slate-100 px-6 py-5 space-y-4">
-            <a href="#destinos" class="block text-base font-semibold text-slate-700 py-1" onclick="closeMobileMenu()">Destinos de Autor</a>
-            <a href="#experiencia" class="block text-base font-semibold text-slate-700 py-1" onclick="closeMobileMenu()">La Experiencia</a>
-            <a href="#circuitos" class="block text-base font-semibold text-slate-700 py-1" onclick="closeMobileMenu()">Circuitos y Museos</a>
-            <a href="#guias" class="block text-base font-semibold text-slate-700 py-1" onclick="closeMobileMenu()">Equipo de Guías</a>
-            <a href="#cotizador" class="block text-base font-semibold text-slate-700 py-1" onclick="closeMobileMenu()">Cotizar Experiencia</a>
-            <div class="pt-2 flex flex-col gap-2">
-                <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Deseo%20información%20sobre%20los%20tours%20y%20guiaturas%20en%20Venezuela" target="_blank" class="w-full text-center py-2.5 rounded-xl bg-pink-500 text-white text-sm font-bold flex items-center justify-center gap-2">
+        <div id="mobileDrawer" class="hidden md:hidden bg-brand-night/95 backdrop-blur-xl border-t border-white/5 px-6 py-6 space-y-3">
+            <a href="#destinos" class="block text-base font-semibold text-slate-200 py-2 hover:text-pink-400" onclick="closeMobileMenu()">Destinos de Autor</a>
+            <a href="#experiencia" class="block text-base font-semibold text-slate-200 py-2 hover:text-pink-400" onclick="closeMobileMenu()">La Experiencia</a>
+            <a href="#guias" class="block text-base font-semibold text-slate-200 py-2 hover:text-pink-400" onclick="closeMobileMenu()">Equipo de Guías</a>
+            <a href="#cotizador" class="block text-base font-semibold text-slate-200 py-2 hover:text-pink-400" onclick="closeMobileMenu()">Cotizar Experiencia</a>
+            <div class="pt-3 flex flex-col gap-2">
+                <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Deseo%20información%20sobre%20los%20tours%20y%20guiaturas%20en%20Venezuela" target="_blank" class="w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-bold flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp 1 (+58 414-1448515)
                 </a>
-                <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Deseo%20información%20sobre%20experiencias%20turísticas" target="_blank" class="w-full text-center py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold flex items-center justify-center gap-2">
+                <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Deseo%20información%20sobre%20experiencias%20turísticas" target="_blank" class="w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp 2 (+58 412-0425563)
                 </a>
             </div>
         </div>
     </header>
 
-    <section id="inicio" class="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
-        <!-- Background dynamic image layer -->
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+        <!-- Background image -->
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop" 
-                 alt="Costas y Playas de Venezuela" 
-                 class="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out" id="heroBg">
-            <div class="absolute inset-0 hero-gradient"></div>
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop"
+                 alt="Costas y Playas de Venezuela"
+                 class="w-full h-full object-cover object-center scale-105 transition-transform duration-[1.5s]" id="heroBg">
+            <div class="absolute inset-0 hero-overlay"></div>
         </div>
 
-        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center text-white">
+        <!-- Floating decorative elements -->
+        <div class="absolute top-1/4 left-8 hidden lg:block float-anim z-10 opacity-70">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-500/30 to-cyan-400/30 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                <i class="fa-solid fa-compass text-2xl text-cyan-300"></i>
+            </div>
+        </div>
+        <div class="absolute bottom-1/4 right-8 hidden lg:block float-anim z-10 opacity-70" style="animation-delay: -3s;">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-yellow-400/30 to-pink-500/30 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                <i class="fa-solid fa-mountain-sun text-2xl text-yellow-300"></i>
+            </div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center">
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold uppercase tracking-widest text-pink-300 mb-6 badge-pulse">
-                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold uppercase tracking-[0.25em] text-pink-200 mb-8 badge-pulse reveal">
+                <span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
                 Guiatura Turística Especializada & Experiencial
             </div>
 
             <!-- Title -->
-            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight mb-6">
-                Venezuela no solo se visita, <br>
-                <span class="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-sky-300">
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl font-bold leading-[0.95] tracking-tight mb-8 reveal" style="transition-delay: 0.1s;">
+                Venezuela no solo se visita,
+                <span class="block mt-2 italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-amber-300 to-cyan-300" style="background-size: 200% auto; animation: gradient-flow 6s linear infinite;">
                     se vive con el alma.
                 </span>
             </h1>
 
             <!-- Subtitle -->
-            <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-200 font-normal leading-relaxed mb-10">
+            <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-200 font-normal leading-relaxed mb-12 reveal" style="transition-delay: 0.25s;">
                 Transformamos cada destino en una historia inolvidable. Acompañamiento por profesionales del área turística que conectan historia viva, biodiversidad y confort humano.
             </p>
 
             <!-- Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#cotizador" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-sm tracking-wide shadow-xl shadow-pink-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal" style="transition-delay: 0.4s;">
+                <a href="#cotizador" class="cta-glow w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white font-bold text-sm tracking-wide hover:scale-105 active:scale-95 transition-transform duration-300 flex items-center justify-center gap-3 shadow-2xl shadow-pink-500/40">
                     <span>Diseñar mi Experiencia</span>
-                    <i class="fa-solid fa-arrow-right"></i>
+                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </a>
-                <a href="#destinos" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 text-white font-semibold text-sm tracking-wide transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-compass text-pink-400"></i>
+                <a href="#destinos" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold text-sm tracking-wide transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-compass text-cyan-300"></i>
                     <span>Ver Destinos Exclusivos</span>
                 </a>
             </div>
 
             <!-- Stats strip -->
-            <div class="mt-14 pt-8 border-t border-white/15 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div>
-                    <span class="block text-2xl sm:text-3xl font-extrabold text-white">100%</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wider">Profesionales Certificados</span>
+            <div class="mt-20 pt-8 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 reveal" style="transition-delay: 0.55s;">
+                <div class="text-center">
+                    <div class="font-display text-4xl sm:text-5xl font-extrabold text-white stat-glow counter" data-target="100" data-suffix="%">0%</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-[0.2em] mt-2">Profesionales Certificados</div>
                 </div>
-                <div>
-                    <span class="block text-2xl sm:text-3xl font-extrabold text-pink-400">+12</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wider">Circuitos Patrimoniales</span>
+                <div class="text-center">
+                    <div class="font-display text-4xl sm:text-5xl font-extrabold text-pink-400 stat-glow counter" data-target="12" data-prefix="+">0</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-[0.2em] mt-2">Circuitos Patrimoniales</div>
                 </div>
-                <div>
-                    <span class="block text-2xl sm:text-3xl font-extrabold text-sky-400">0 Estrés</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wider">Logística Garantizada</span>
+                <div class="text-center">
+                    <div class="font-display text-4xl sm:text-5xl font-extrabold text-cyan-300 stat-glow">0 Estrés</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-[0.2em] mt-2">Logística Garantizada</div>
                 </div>
-                <div>
-                    <span class="block text-2xl sm:text-3xl font-extrabold text-yellow-300">Seguro</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wider">Experiencias Seguras</span>
+                <div class="text-center">
+                    <div class="font-display text-4xl sm:text-5xl font-extrabold text-amber-300 stat-glow">Seguro</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-[0.2em] mt-2">Experiencias Seguras</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden sm:flex flex-col items-center gap-2 text-white/60">
+            <span class="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+            <div class="w-px h-12 bg-gradient-to-b from-white/60 to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- ============ MARQUEE STRIP ============ -->
+    <section class="relative py-6 bg-gradient-to-r from-pink-500 via-rose-500 to-cyan-500 overflow-hidden border-y border-white/10">
+        <div class="marquee">
+            <div class="flex items-center gap-16 text-white font-display font-extrabold text-2xl uppercase tracking-wider">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-compass"></i> Historia Viva</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-water"></i> Mar Caribe</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-mountain"></i> Cordillera Andina</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-leaf"></i> Ecoturismo</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-utensils"></i> Gastronomía Autóctona</span>
+                <span class="text-white/40">✦</span>
+            </div>
+            <div class="flex items-center gap-16 text-white font-display font-extrabold text-2xl uppercase tracking-wider" aria-hidden="true">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-compass"></i> Historia Viva</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-water"></i> Mar Caribe</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-mountain"></i> Cordillera Andina</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-leaf"></i> Ecoturismo</span>
+                <span class="text-white/40">✦</span>
+                <span class="flex items-center gap-3"><i class="fa-solid fa-utensils"></i> Gastronomía Autóctona</span>
+                <span class="text-white/40">✦</span>
             </div>
         </div>
     </section>
 
-    <section id="experiencia" class="py-20 bg-white relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-xs uppercase font-bold tracking-widest text-pink-500">Nuestra Filosofía</span>
-                <h2 class="text-3xl sm:text-4xl font-bold font-serif text-slate-900 mt-2">
-                    La diferencia entre "ver un lugar" y <span class="text-pink-600">sentirlo para siempre</span>
+    <!-- ============ EXPERIENCIA / FILOSOFÍA ============ -->
+    <section id="experiencia" class="relative py-28 bg-brand-ink noise-bg overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center max-w-4xl mx-auto mb-20">
+                <span class="inline-block text-xs uppercase font-bold tracking-[0.3em] text-pink-400 mb-3 reveal">Nuestra Filosofía</span>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold font-serif text-white mt-2 leading-tight reveal">
+                    La diferencia entre <span class="italic text-slate-400">"ver un lugar"</span> y
+                    <span class="text-gradient font-extrabold">sentirlo para siempre</span>
                 </h2>
-                <p class="text-slate-600 mt-4 leading-relaxed">
-                    Un turista común se detiene a tomar una foto y se marcha sin entender qué pisó. Nosotros guiamos con pedagogía, pasión y mística para que el relato del lugar te conmueva.
+                <p class="text-slate-400 mt-6 leading-relaxed max-w-3xl mx-auto reveal">
+                    Un turista común se detiene a tomar una foto y se marcha sin entender qué pisó. Nosotros guiamos con pedagogía, pasión y mística para que el relato del lugar te conmueva. Cada ruta es un guion cuidadosamente tejido entre historia, geografía, emoción y respeto por el patrimonio vivo de Venezuela.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-pink-200 hover:shadow-xl transition-all group">
-                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-graduation-cap"></i>
+            <!-- Bento grid layout -->
+            <div class="grid md:grid-cols-3 gap-6 reveal-stagger">
+                <!-- Card 1 - large -->
+                <div class="gradient-border p-10 rounded-3xl hover-lift md:col-span-2 md:row-span-2 relative overflow-hidden group">
+                    <div class="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-pink-500/20 blur-3xl group-hover:bg-pink-500/30 transition-all"></div>
+                    <div class="relative">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center text-2xl mb-6 shadow-lg shadow-pink-500/30">
+                            <i class="fa-solid fa-graduation-cap text-white"></i>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">Guiatura Especializada</h3>
+                        <p class="text-slate-300 text-base leading-relaxed mb-6">
+                            Guiatura dirigida por profesionales del turismo formados en historia patria, geografía, ecología y protocolo de atención personalizada. Cada guía es un puente entre el viajero y la esencia del destino, traduciendo piedras, sabores y vientos en relatos memorables.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-semibold">Historia</span>
+                            <span class="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-semibold">Geografía</span>
+                            <span class="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-semibold">Ecología</span>
+                            <span class="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-semibold">Protocolo VIP</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Guiatura Especializada</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Guiatura dirigida por profesionales del turismo formados en historia patria, geografía, ecología y protocolo de atención personalizada.
-                    </p>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all group">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-heart-pulse"></i>
+                <div class="gradient-border p-8 rounded-3xl hover-lift relative overflow-hidden group">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-cyan-500/20 blur-3xl group-hover:bg-cyan-500/30 transition-all"></div>
+                    <div class="relative">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-500 flex items-center justify-center text-2xl mb-5 shadow-lg shadow-cyan-500/30">
+                            <i class="fa-solid fa-heart-pulse text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Diseño Emocional</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Música local, paradas gastronómicas secretas, interacción con cronistas y momentos diseñados para conectar en pareja, familia o amigos.
+                        </p>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Diseño Emocional</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Música local, paradas gastronómicas secretas, interacción con cronistas y momentos diseñados para conectar en pareja, familia o amigos.
-                    </p>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-amber-200 hover:shadow-xl transition-all group">
-                    <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-shield-halved"></i>
+                <div class="gradient-border p-8 rounded-3xl hover-lift relative overflow-hidden group">
+                    <div class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-amber-500/20 blur-3xl group-hover:bg-amber-500/30 transition-all"></div>
+                    <div class="relative">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-2xl mb-5 shadow-lg shadow-amber-500/30">
+                            <i class="fa-solid fa-shield-halved text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Tranquilidad Absoluta</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Rutas validadas, traslados marítimos y terrestres con operadores verificados, primeros auxilios e itinerarios optimizados sin apuros.
+                        </p>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Tranquilidad Absoluta</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Rutas validadas, traslados marítimos y terrestres con operadores verificados, primeros auxilios e itinerarios optimizados sin apuros.
-                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="destinos" class="py-20 bg-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+    <!-- ============ DESTINOS ============ -->
+    <section id="destinos" class="relative py-28 bg-gradient-to-b from-brand-ink via-brand-night to-brand-violet overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 reveal">
                 <div>
-                    <span class="text-xs uppercase font-bold tracking-widest text-pink-600">Catálogo de Destinos</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold font-serif text-slate-900 mt-2">
-                        Lugares Icónicos de Venezuela
+                    <span class="inline-block text-xs uppercase font-bold tracking-[0.3em] text-pink-400 mb-3">Catálogo de Destinos</span>
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold font-serif text-white leading-tight">
+                        Lugares <span class="text-gradient italic">Icónicos</span> de Venezuela
                     </h2>
-                    <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
-                        Desde el casco histórico caribeño de Puerto Cabello hasta las nubes de El Ávila y las aguas turquesas vírgenes.
+                    <p class="text-slate-400 text-sm sm:text-base mt-4 max-w-xl leading-relaxed">
+                        Desde el casco histórico caribeño de Puerto Cabello hasta las nubes de El Ávila y las aguas turquesas vírgenes de La Tortuga. Cada destino, una sinfonía.
                     </p>
                 </div>
 
                 <!-- Filter Pills -->
                 <div class="flex flex-wrap gap-2" id="filterContainer">
-                    <button onclick="filterDestinations('todos')" class="filter-btn active px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-pink-500 text-white transition-all shadow-sm">
+                    <button onclick="filterDestinations('todos', event)" class="filter-btn active px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 text-slate-300 hover:bg-white/10 transition-all">
                         Todos
                     </button>
-                    <button onclick="filterDestinations('carabobo')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-slate-700 hover:bg-pink-50 hover:text-pink-600 transition-all shadow-sm">
+                    <button onclick="filterDestinations('carabobo', event)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 text-slate-300 hover:bg-white/10 transition-all">
                         Carabobo & Costas
                     </button>
-                    <button onclick="filterDestinations('montana')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-slate-700 hover:bg-pink-50 hover:text-pink-600 transition-all shadow-sm">
+                    <button onclick="filterDestinations('montana', event)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 text-slate-300 hover:bg-white/10 transition-all">
                         Montaña & Selva
                     </button>
-                    <button onclick="filterDestinations('islas')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-slate-700 hover:bg-pink-50 hover:text-pink-600 transition-all shadow-sm">
+                    <button onclick="filterDestinations('islas', event)" class="filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 text-slate-300 hover:bg-white/10 transition-all">
                         Islas Caribeñas
                     </button>
                 </div>
             </div>
 
-            <!-- Destinations Cards Grid -->
+            <!-- Destinations Grid -->
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="destinationsGrid">
-                
-                <!-- 1: Zona Colonial Puerto Cabello -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="carabobo">
+
+                <!-- 1: Puerto Cabello -->
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col" data-category="carabobo">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=800&auto=format&fit=crop" 
-                             alt="Zona Colonial y Museos Puerto Cabello" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-blue-900/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-landmark mr-1 text-pink-400"></i> Historia Colonial
+                        <img src="https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=800&auto=format&fit=crop"
+                             alt="Zona Colonial y Museos Puerto Cabello"
+                             class="dest-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-blue-900/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                            <i class="fa-solid fa-landmark mr-1.5 text-pink-400"></i> Historia Colonial
                         </div>
                         <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
                             Carabobo
@@ -308,28 +629,29 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Zona Colonial & Museos de Puerto Cabello</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            <h3 class="text-xl font-bold text-white mb-2">Zona Colonial & Museos de Puerto Cabello</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
                                 Camina por la emblemática Calle Lanceros, la Iglesia Nuestra Señora del Rosario, Fortín Solano y los museos históricos con un relato épico de la última batalla libertadora.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Tour de Autor</span>
-                            <button onclick="openBookingFor('Zona Colonial de Puerto Cabello')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Tour de Autor</span>
+                            <button onclick="openBookingFor('Zona Colonial de Puerto Cabello')" class="text-xs font-bold px-4 py-2 rounded-xl bg-pink-500/15 text-pink-300 hover:bg-pink-500 hover:text-white transition-all">
                                 Consultar Fecha
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2: Puente de los Españoles / San Esteban -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="montana carabobo">
+                <!-- 2: Puente de los Españoles -->
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col" data-category="montana carabobo">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" 
-                             alt="Puente de los Españoles Parque San Esteban" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-emerald-900/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-tree mr-1 text-emerald-400"></i> Senderismo Histórico
+                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop"
+                             alt="Puente de los Españoles Parque San Esteban"
+                             class="dest-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-emerald-900/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                            <i class="fa-solid fa-tree mr-1.5 text-emerald-400"></i> Senderismo Histórico
                         </div>
                         <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
                             P.N. San Esteban
@@ -337,28 +659,29 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Puente de los Españoles (Camino de los Españoles)</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            <h3 class="text-xl font-bold text-white mb-2">Puente de los Españoles</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
                                 Una joya de ingeniería del siglo XVIII inmersa en la selva nublada de San Esteban. Pozos cristalinos, flora autóctona y el eco de los arrieros coloniales.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Trekking & Historia</span>
-                            <button onclick="openBookingFor('Puente de los Españoles')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Trekking & Historia</span>
+                            <button onclick="openBookingFor('Puente de los Españoles')" class="text-xs font-bold px-4 py-2 rounded-xl bg-pink-500/15 text-pink-300 hover:bg-pink-500 hover:text-white transition-all">
                                 Consultar Fecha
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3: Bahía de Patanemo e Isla Larga -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="carabobo islas">
+                <!-- 3: Patanemo & Isla Larga -->
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col" data-category="carabobo islas">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=800&auto=format&fit=crop" 
-                             alt="Patanemo e Isla Larga Carabobo" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-sky-900/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-water mr-1 text-sky-400"></i> Sol & Snorkel
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=800&auto=format&fit=crop"
+                             alt="Patanemo e Isla Larga Carabobo"
+                             class="dest-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-sky-900/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                            <i class="fa-solid fa-water mr-1.5 text-sky-400"></i> Sol & Snorkel
                         </div>
                         <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
                             Mar Caribe
@@ -366,14 +689,14 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Bahía de Patanemo & Cayo Isla Larga</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            <h3 class="text-xl font-bold text-white mb-2">Bahía de Patanemo & Cayo Isla Larga</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
                                 Aguas cristalinas, degustación del tradicional chocolate y pescado frito costero, junto con la aventura de bucear los míticos barcos hundidos en Isla Larga.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Aventura Marina</span>
-                            <button onclick="openBookingFor('Bahía de Patanemo e Isla Larga')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Aventura Marina</span>
+                            <button onclick="openBookingFor('Bahía de Patanemo e Isla Larga')" class="text-xs font-bold px-4 py-2 rounded-xl bg-pink-500/15 text-pink-300 hover:bg-pink-500 hover:text-white transition-all">
                                 Consultar Fecha
                             </button>
                         </div>
@@ -381,13 +704,14 @@
                 </div>
 
                 <!-- 4: Campo Carabobo -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="carabobo">
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col" data-category="carabobo">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=800&auto=format&fit=crop" 
-                             alt="Monumento Histórico Campo Carabobo" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-amber-900/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-monument mr-1 text-amber-400"></i> Monumental
+                        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=800&auto=format&fit=crop"
+                             alt="Monumento Histórico Campo Carabobo"
+                             class="dest-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-amber-900/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                            <i class="fa-solid fa-monument mr-1.5 text-amber-400"></i> Monumental
                         </div>
                         <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
                             Libertad
@@ -395,14 +719,14 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Campo Inmortal de Carabobo</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            <h3 class="text-xl font-bold text-white mb-2">Campo Inmortal de Carabobo</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
                                 El altar de la patria. El Arco del Triunfo, la Avenida de los Héroes y el cambio de guardia con un análisis geoestratégico de cómo se forjó la libertad de América.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Memoria & Épica</span>
-                            <button onclick="openBookingFor('Campo Carabobo')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Memoria & Épica</span>
+                            <button onclick="openBookingFor('Campo Carabobo')" class="text-xs font-bold px-4 py-2 rounded-xl bg-pink-500/15 text-pink-300 hover:bg-pink-500 hover:text-white transition-all">
                                 Consultar Fecha
                             </button>
                         </div>
@@ -410,13 +734,14 @@
                 </div>
 
                 <!-- 5: Colonia Tovar -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="montana">
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col" data-category="montana">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" 
-                             alt="Colonia Tovar Montañas de Aragua" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-rose-950/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-cloud-sun mr-1 text-rose-300"></i> Clima Frío & Cultura
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop"
+                             alt="Colonia Tovar Montañas de Aragua"
+                             class="dest-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-rose-950/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                            <i class="fa-solid fa-cloud-sun mr-1.5 text-rose-300"></i> Clima Frío & Cultura
                         </div>
                         <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
                             Aragua
@@ -424,28 +749,29 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Colonia Tovar: La Selva Negra Andina</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            <h3 class="text-xl font-bold text-white mb-2">Colonia Tovar: La Selva Negra Andina</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
                                 Arquitectura con entramado de madera, fresas con crema, cerveza artesanal y la asombrosa historia de los colonos de 1843 entre la niebla de la cordillera.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Romántico & Gourmet</span>
-                            <button onclick="openBookingFor('Colonia Tovar')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Romántico & Gourmet</span>
+                            <button onclick="openBookingFor('Colonia Tovar')" class="text-xs font-bold px-4 py-2 rounded-xl bg-pink-500/15 text-pink-300 hover:bg-pink-500 hover:text-white transition-all">
                                 Consultar Fecha
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 6: Waraira Repano (El Ávila) -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="montana">
+                <!-- 6: Waraira Repano -->
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col" data-category="montana">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" 
-                             alt="Parque Nacional Waraira Repano El Ávila" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-indigo-950/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-mountain mr-1 text-indigo-300"></i> Cordillera de la Costa
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop"
+                             alt="Parque Nacional Waraira Repano El Ávila"
+                             class="dest-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-indigo-950/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                            <i class="fa-solid fa-mountain mr-1.5 text-indigo-300"></i> Cordillera de la Costa
                         </div>
                         <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
                             Caracas / La Guaira
@@ -453,14 +779,14 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Parque Nacional Waraira Repano</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            <h3 class="text-xl font-bold text-white mb-2">Parque Nacional Waraira Repano</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
                                 Ascenso hacia el mítico Hotel Humboldt, senderos entre helechos gigantes, vista panorámica al mar Caribe y a la metrópoli, acompañado de historias indígenas caribes.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Mirador & Cumbre</span>
-                            <button onclick="openBookingFor('Waraira Repano El Ávila')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Mirador & Cumbre</span>
+                            <button onclick="openBookingFor('Waraira Repano El Ávila')" class="text-xs font-bold px-4 py-2 rounded-xl bg-pink-500/15 text-pink-300 hover:bg-pink-500 hover:text-white transition-all">
                                 Consultar Fecha
                             </button>
                         </div>
@@ -468,30 +794,39 @@
                 </div>
 
                 <!-- 7: Isla La Tortuga -->
-                <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-slate-200/70 flex flex-col" data-category="islas">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" 
-                             alt="Isla La Tortuga Arenas Blancas" 
-                             class="dest-img w-full h-full object-cover transition-transform duration-500">
-                        <div class="absolute top-4 left-4 bg-teal-900/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            <i class="fa-solid fa-gem mr-1 text-teal-300"></i> Paraíso Virgen
+                <div class="destination-card tilt-card bg-gradient-to-b from-white/[0.07] to-white/[0.02] rounded-3xl overflow-hidden border border-white/10 flex flex-col sm:col-span-2 lg:col-span-3" data-category="islas">
+                    <div class="grid sm:grid-cols-2 items-center">
+                        <div class="relative h-64 sm:h-full overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
+                                 alt="Isla La Tortuga Arenas Blancas"
+                                 class="dest-img w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-brand-ink/80 sm:to-brand-ink/95"></div>
+                            <div class="absolute top-4 left-4 bg-teal-900/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
+                                <i class="fa-solid fa-gem mr-1.5 text-teal-300"></i> Paraíso Virgen
+                            </div>
+                            <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
+                                Dependencias Federales
+                            </div>
                         </div>
-                        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 px-3 py-1 rounded-xl text-xs font-bold shadow">
-                            Dependencias Federales
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Expedición a Isla La Tortuga</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                                La segunda isla más grande del país. Playas desiertas de arena impoluta color tiza, piscinas naturales turquesas y noches de astrofotografía con fogata guiada.
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs font-bold text-pink-600 uppercase">Exclusivo & Safari</span>
-                            <button onclick="openBookingFor('Isla La Tortuga')" class="text-xs font-bold px-3 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-500 hover:text-white transition-all">
-                                Consultar Fecha
-                            </button>
+                        <div class="p-8 sm:p-10 flex-1 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-extrabold tracking-[0.3em] text-gradient">Expedición Premium</span>
+                                <h3 class="text-2xl sm:text-3xl font-bold text-white mt-3 mb-3">Expedición a Isla La Tortuga</h3>
+                                <p class="text-slate-300 text-base leading-relaxed mb-6">
+                                    La segunda isla más grande del país. Playas desiertas de arena impoluta color tiza, piscinas naturales turquesas y noches de astrofotografía con fogata guiada.
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">Arenas Blancas</span>
+                                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">Snorkel Premium</span>
+                                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">Astrofotografía</span>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                                <span class="text-xs font-bold text-pink-400 uppercase tracking-wider">Exclusivo & Safari</span>
+                                <button onclick="openBookingFor('Isla La Tortuga')" class="text-xs font-bold px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white hover:scale-105 transition-transform">
+                                    Consultar Fecha <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -500,189 +835,197 @@
         </div>
     </section>
 
-    <section id="cotizador" class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6">
-            <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
-                <!-- Background ambient circles -->
-                <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-pink-500/20 blur-3xl pointer-events-none"></div>
-                <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl pointer-events-none"></div>
+    <!-- ============ COTIZADOR ============ -->
+    <section id="cotizador" class="relative py-28 overflow-hidden">
+        <div class="absolute inset-0 planner-glow"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+            <div class="rounded-[2.5rem] p-2 bg-gradient-to-br from-pink-500/30 via-cyan-500/20 to-amber-400/30 shadow-2xl shadow-pink-500/20 reveal">
+                <div class="rounded-[2.25rem] bg-brand-night/80 backdrop-blur-xl p-8 sm:p-12 text-white relative overflow-hidden border border-white/10">
 
-                <div class="relative z-10">
-                    <div class="text-center max-w-2xl mx-auto mb-10">
-                        <span class="px-3.5 py-1 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 text-xs uppercase font-bold tracking-widest">
-                            Planificador Inteligente
-                        </span>
-                        <h2 class="text-3xl sm:text-4xl font-serif font-bold mt-4">
-                            Arma tu Experiencia Personalizada
-                        </h2>
-                        <p class="text-slate-300 text-sm mt-3">
-                            Selecciona tu destino, cantidad de viajeros y tus intereses; generaremos una propuesta directa a nuestro WhatsApp en segundos.
-                        </p>
-                    </div>
-
-                    <form id="tripPlannerForm" onsubmit="handleTripPlannerSubmit(event)" class="space-y-6 max-w-3xl mx-auto">
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <!-- Destination Selector -->
-                            <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                                    <i class="fa-solid fa-map-pin text-pink-400 mr-1"></i> Destino Principal
-                                </label>
-                                <select id="formDestino" class="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm">
-                                    <option value="Puerto Cabello Histórico y Museos" class="text-slate-900">Puerto Cabello: Casco Colonial y Museos</option>
-                                    <option value="Bahía de Patanemo e Isla Larga" class="text-slate-900">Patanemo & Cayo Isla Larga</option>
-                                    <option value="Puente de los Españoles (San Esteban)" class="text-slate-900">Puente de los Españoles (Senderismo)</option>
-                                    <option value="Campo Histórico de Carabobo" class="text-slate-900">Campo Carabobo (Ruta de la Independencia)</option>
-                                    <option value="Colonia Tovar" class="text-slate-900">Colonia Tovar (Clima de montaña)</option>
-                                    <option value="Waraira Repano (El Ávila)" class="text-slate-900">Waraira Repano / Humboldt</option>
-                                    <option value="Isla La Tortuga" class="text-slate-900">Expedición Isla La Tortuga</option>
-                                    <option value="Circuito Combinado Carabobo Completo" class="text-slate-900">Circuito Completo Carabobo (Playa + Historia)</option>
-                                </select>
-                            </div>
-
-                            <!-- Traveler count -->
-                            <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                                    <i class="fa-solid fa-user-group text-sky-400 mr-1"></i> Cantidad de Personas
-                                </label>
-                                <select id="formPersonas" class="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm">
-                                    <option value="En Pareja (2 personas)" class="text-slate-900">En Pareja (2 personas)</option>
-                                    <option value="Grupo Familiar (3 a 5 personas)" class="text-slate-900">Grupo Familiar (3 a 5 personas)</option>
-                                    <option value="Grupo Grande (6 o más personas)" class="text-slate-900">Grupo de amigos (6+ personas)</option>
-                                    <option value="Viajero Solitario / Privado (1 persona)" class="text-slate-900">Viajero Individual / VIP exclusivo</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <!-- Tipo de Experiencia -->
-                            <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-yellow-400 mr-1"></i> Tipo de Enfoque
-                                </label>
-                                <select id="formEnfoque" class="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm">
-                                    <option value="Historia, Cultura y Museos" class="text-slate-900">Historia Profunda, Museos & Patrimonio</option>
-                                    <option value="Relax Playero y Gastronomía Marina" class="text-slate-900">Sol, Mar Caribe & Gastronomía Típica</option>
-                                    <option value="Aventura, Trekking y Naturaleza" class="text-slate-900">Aventura, Senderismo & Ríos</option>
-                                    <option value="Romántico / Aniversario especial" class="text-slate-900">Escapada Romántica / Aniversario</option>
-                                </select>
-                            </div>
-
-                            <!-- Seleccionar Canal de WhatsApp -->
-                            <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                                    <i class="fa-brands fa-whatsapp text-green-400 mr-1"></i> Línea Directa de Atención
-                                </label>
-                                <select id="formLinea" class="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm">
-                                    <option value="584141448515" class="text-slate-900">Línea Principal: +58 414-1448515</option>
-                                    <option value="584120425563" class="text-slate-900">Línea Alterna: +58 412-0425563</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Nombre o Comentario -->
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                                <i class="fa-solid fa-pen text-rose-400 mr-1"></i> Tu Nombre y Fecha Tentativa (Opcional)
-                            </label>
-                            <input type="text" id="formDetalle" placeholder="Ej: Carlos Pérez, planeamos viajar el próximo fin de semana..." class="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm">
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="pt-4 text-center">
-                            <button type="submit" class="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white font-bold text-sm uppercase tracking-wider shadow-lg shadow-pink-500/40 hover:scale-105 active:scale-95 transition-all inline-flex items-center justify-center gap-3">
-                                <i class="fa-brands fa-whatsapp text-lg"></i>
-                                <span>Generar Itinerario vía WhatsApp</span>
-                            </button>
-                            <p class="text-xs text-slate-400 mt-3">
-                                Serás redirigido directamente a una conversación privada para brindarte cotización y fechas disponibles.
+                    <div class="relative z-10">
+                        <div class="text-center max-w-2xl mx-auto mb-10">
+                            <span class="inline-block px-4 py-1.5 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs uppercase font-bold tracking-[0.3em] mb-5">
+                                Planificador Inteligente
+                            </span>
+                            <h2 class="text-3xl sm:text-5xl font-serif font-bold leading-tight">
+                                Arma tu <span class="text-gradient italic">Experiencia</span> Personalizada
+                            </h2>
+                            <p class="text-slate-300 text-sm sm:text-base mt-4 leading-relaxed">
+                                Selecciona tu destino, cantidad de viajeros y tus intereses; generaremos una propuesta directa a nuestro WhatsApp en segundos.
                             </p>
                         </div>
-                    </form>
+
+                        <form id="tripPlannerForm" onsubmit="handleTripPlannerSubmit(event)" class="space-y-6 max-w-3xl mx-auto">
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <!-- Destination Selector -->
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.2em] text-slate-300 mb-2">
+                                        <i class="fa-solid fa-map-pin text-pink-400 mr-1"></i> Destino Principal
+                                    </label>
+                                    <select id="formDestino" class="w-full px-4 py-3.5 rounded-2xl bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm appearance-none cursor-pointer">
+                                        <option value="Puerto Cabello Histórico y Museos" class="text-slate-900">Puerto Cabello: Casco Colonial y Museos</option>
+                                        <option value="Bahía de Patanemo e Isla Larga" class="text-slate-900">Patanemo & Cayo Isla Larga</option>
+                                        <option value="Puente de los Españoles (San Esteban)" class="text-slate-900">Puente de los Españoles (Senderismo)</option>
+                                        <option value="Campo Histórico de Carabobo" class="text-slate-900">Campo Carabobo (Ruta de la Independencia)</option>
+                                        <option value="Colonia Tovar" class="text-slate-900">Colonia Tovar (Clima de montaña)</option>
+                                        <option value="Waraira Repano (El Ávila)" class="text-slate-900">Waraira Repano / Humboldt</option>
+                                        <option value="Isla La Tortuga" class="text-slate-900">Expedición Isla La Tortuga</option>
+                                        <option value="Circuito Combinado Carabobo Completo" class="text-slate-900">Circuito Completo Carabobo (Playa + Historia)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Traveler count -->
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.2em] text-slate-300 mb-2">
+                                        <i class="fa-solid fa-user-group text-cyan-300 mr-1"></i> Cantidad de Personas
+                                    </label>
+                                    <select id="formPersonas" class="w-full px-4 py-3.5 rounded-2xl bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm appearance-none cursor-pointer">
+                                        <option value="En Pareja (2 personas)" class="text-slate-900">En Pareja (2 personas)</option>
+                                        <option value="Grupo Familiar (3 a 5 personas)" class="text-slate-900">Grupo Familiar (3 a 5 personas)</option>
+                                        <option value="Grupo Grande (6 o más personas)" class="text-slate-900">Grupo de amigos (6+ personas)</option>
+                                        <option value="Viajero Solitario / Privado (1 persona)" class="text-slate-900">Viajero Individual / VIP exclusivo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <!-- Tipo de Experiencia -->
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.2em] text-slate-300 mb-2">
+                                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300 mr-1"></i> Tipo de Enfoque
+                                    </label>
+                                    <select id="formEnfoque" class="w-full px-4 py-3.5 rounded-2xl bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm appearance-none cursor-pointer">
+                                        <option value="Historia, Cultura y Museos" class="text-slate-900">Historia Profunda, Museos & Patrimonio</option>
+                                        <option value="Relax Playero y Gastronomía Marina" class="text-slate-900">Sol, Mar Caribe & Gastronomía Típica</option>
+                                        <option value="Aventura, Trekking y Naturaleza" class="text-slate-900">Aventura, Senderismo & Ríos</option>
+                                        <option value="Romántico / Aniversario especial" class="text-slate-900">Escapada Romántica / Aniversario</option>
+                                    </select>
+                                </div>
+
+                                <!-- Seleccionar Canal de WhatsApp -->
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.2em] text-slate-300 mb-2">
+                                        <i class="fa-brands fa-whatsapp text-green-400 mr-1"></i> Línea Directa de Atención
+                                    </label>
+                                    <select id="formLinea" class="w-full px-4 py-3.5 rounded-2xl bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm appearance-none cursor-pointer">
+                                        <option value="584141448515" class="text-slate-900">Línea Principal: +58 414-1448515</option>
+                                        <option value="584120425563" class="text-slate-900">Línea Alterna: +58 412-0425563</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Nombre o Comentario -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.2em] text-slate-300 mb-2">
+                                    <i class="fa-solid fa-pen text-rose-400 mr-1"></i> Tu Nombre y Fecha Tentativa (Opcional)
+                                </label>
+                                <input type="text" id="formDetalle" placeholder="Ej: Carlos Pérez, planeamos viajar el próximo fin de semana..." class="w-full px-4 py-3.5 rounded-2xl bg-white/5 border border-white/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm">
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="pt-4 text-center">
+                                <button type="submit" class="cta-glow w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:scale-105 text-white font-bold text-sm uppercase tracking-[0.2em] shadow-lg shadow-pink-500/40 active:scale-95 transition-transform inline-flex items-center justify-center gap-3">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Generar Itinerario vía WhatsApp</span>
+                                </button>
+                                <p class="text-xs text-slate-400 mt-3">
+                                    Serás redirigido directamente a una conversación privada para brindarte cotización y fechas disponibles.
+                                </p>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="guias" class="py-20 bg-slate-50 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Left: Story & Credentials -->
-                <div>
-                    <span class="text-xs uppercase font-bold tracking-widest text-pink-600">Conoce a los Anfitriones</span>
-                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 mt-2">
-                        Pasión por la Tierra y Formación Turística de Excelencia
+    <!-- ============ GUIAS / NUESTROS ANFITRIONES ============ -->
+    <section id="guias" class="relative py-28 bg-brand-ink noise-bg overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Left: Story -->
+                <div class="reveal">
+                    <span class="inline-block text-xs uppercase font-bold tracking-[0.3em] text-pink-400 mb-3">Conoce a los Anfitriones</span>
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mt-2 leading-tight">
+                        Pasión por la Tierra y <span class="text-gradient italic">Formación Turística</span> de Excelencia
                     </h2>
-                    <p class="text-slate-600 mt-4 leading-relaxed">
-                        Nuestra agencia nace de un amor profundo por los contrastes de Venezuela. Cada ruta es previamente estudiada y recorrida por nosotros para garantizar que el viajero viva seguridad, respeto ambiental y una inmersión auténtica en las raíces culturales.
+                    <p class="text-slate-400 mt-6 leading-relaxed">
+                        Nuestra agencia nace de un amor profundo por los contrastes de Venezuela. Cada ruta es previamente estudiada y recorrida por nosotros para garantizar que el viajero viva seguridad, respeto ambiental y una inmersión auténtica en las raíces culturales. Somos narradores, custodios del patrimonio y anfitriones conscientes del privilegio que significa mostrar esta tierra.
                     </p>
 
-                    <div class="mt-8 space-y-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-bold shrink-0">
+                    <div class="mt-10 space-y-5">
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500/30 to-rose-500/20 border border-pink-500/40 text-pink-400 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-check"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900 text-sm">Guiatura con Licencia y Protocolo</h4>
-                                <p class="text-xs text-slate-600">Conocimiento riguroso de normativas patrimoniales, zonas de resguardo y atención a emergencias.</p>
+                                <h4 class="font-bold text-white text-base">Guiatura con Licencia y Protocolo</h4>
+                                <p class="text-sm text-slate-400 mt-1">Conocimiento riguroso de normativas patrimoniales, zonas de resguardo y atención a emergencias.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500/30 to-blue-500/20 border border-cyan-500/40 text-cyan-300 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-camera"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900 text-sm">Registro Fotográfico del Viaje</h4>
-                                <p class="text-xs text-slate-600">Te ayudamos a capturar los mejores ángulos y recuerdos sin que tengas que preocuparte por el lente.</p>
+                                <h4 class="font-bold text-white text-base">Registro Fotográfico del Viaje</h4>
+                                <p class="text-sm text-slate-400 mt-1">Te ayudamos a capturar los mejores ángulos y recuerdos sin que tengas que preocuparte por el lente.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold shrink-0">
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400/30 to-orange-500/20 border border-amber-400/40 text-amber-300 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-utensils"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900 text-sm">Inmersión Culinaria Autóctona</h4>
-                                <p class="text-xs text-slate-600">Conexión con los productores locales de cacao, pescadores artesanales y dulcería criolla.</p>
+                                <h4 class="font-bold text-white text-base">Inmersión Culinaria Autóctona</h4>
+                                <p class="text-sm text-slate-400 mt-1">Conexión con los productores locales de cacao, pescadores artesanales y dulcería criolla.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Direct Contact Callout -->
-                    <div class="mt-8 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="mt-10 p-6 rounded-2xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 hover-lift">
                         <div>
-                            <span class="text-xs text-slate-500 uppercase font-semibold">¿Tienes preguntas directas?</span>
-                            <div class="font-bold text-slate-900 text-base">Atención telefónica & WhatsApp</div>
+                            <span class="text-xs text-slate-400 uppercase font-semibold tracking-wider">¿Tienes preguntas directas?</span>
+                            <div class="font-bold text-white text-base mt-1">Atención telefónica & WhatsApp</div>
                         </div>
                         <div class="flex gap-2 w-full sm:w-auto">
-                            <a href="tel:+584141448515" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all">
-                                <i class="fa-solid fa-phone mr-1"></i> 0414-1448515
+                            <a href="tel:+584141448515" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:scale-105 transition-transform text-white text-xs font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-phone"></i> 0414-1448515
                             </a>
-                            <a href="tel:+584120425563" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all">
-                                <i class="fa-solid fa-phone mr-1"></i> 0412-0425563
+                            <a href="tel:+584120425563" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition-transform text-white text-xs font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-phone"></i> 0412-0425563
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Right: Visual Composition -->
-                <div class="relative">
+                <div class="relative reveal" style="transition-delay: 0.2s;">
                     <div class="grid grid-cols-2 gap-4">
-                        <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=600&auto=format&fit=crop" 
-                             alt="Paisaje Venezuela Sol y Mar" 
-                             class="rounded-3xl shadow-lg h-72 w-full object-cover">
-                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=600&auto=format&fit=crop" 
-                             alt="Aventura y Playa en Carabobo" 
-                             class="rounded-3xl shadow-lg h-72 w-full object-cover mt-8">
+                        <div class="relative rounded-3xl overflow-hidden h-72 shadow-2xl group">
+                            <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=600&auto=format&fit=crop"
+                                 alt="Paisaje Venezuela Sol y Mar"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/60 to-transparent"></div>
+                        </div>
+                        <div class="relative rounded-3xl overflow-hidden h-72 shadow-2xl mt-8 group">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=600&auto=format&fit=crop"
+                                 alt="Aventura y Playa en Carabobo"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-brand-ink/60 to-transparent"></div>
+                        </div>
                     </div>
                     <!-- Overlaid Emblem -->
-                    <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl border border-pink-100 shadow-xl flex items-center gap-3 w-max">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 flex items-center justify-center text-white">
-                            <i class="fa-solid fa-heart"></i>
+                    <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-brand-night/90 backdrop-blur-xl px-6 py-4 rounded-2xl border border-pink-500/30 shadow-2xl shadow-pink-500/20 flex items-center gap-3 w-max">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 via-rose-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-pink-500/40">
+                            <i class="fa-solid fa-heart text-lg"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-extrabold text-slate-900">Turismo con Alma</div>
-                            <div class="text-[11px] text-slate-500">Diseñado con dedicación y calidez</div>
+                            <div class="text-xs font-extrabold text-white uppercase tracking-wider">Turismo con Alma</div>
+                            <div class="text-[11px] text-slate-400">Diseñado con dedicación y calidez</div>
                         </div>
                     </div>
                 </div>
@@ -690,67 +1033,77 @@
         </div>
     </section>
 
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <span class="text-xs uppercase font-bold tracking-widest text-pink-600">Testimonios Reales</span>
-                <h2 class="text-3xl font-serif font-bold text-slate-900 mt-2">La voz de quienes viajaron con nosotros</h2>
+    <!-- ============ TESTIMONIOS ============ -->
+    <section class="relative py-28 bg-gradient-to-b from-brand-ink via-brand-night to-brand-ink overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+                <span class="inline-block text-xs uppercase font-bold tracking-[0.3em] text-pink-400 mb-3">Testimonios Reales</span>
+                <h2 class="text-4xl sm:text-5xl font-serif font-bold text-white">La voz de quienes <span class="text-gradient italic">viajaron</span> con nosotros</h2>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-8 reveal-stagger">
                 <!-- Testimonial 1 -->
-                <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100 relative">
-                    <div class="text-pink-500 text-sm mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-slate-600 text-sm italic mb-6">
-                        "Pensábamos que conocíamos Puerto Cabello, pero caminar la zona colonial y el Puente de los Españoles con un guía profesional que te narra la historia con tanta emoción cambió todo por completo."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center text-pink-700 font-bold text-sm">
-                            AR
+                <div class="gradient-border p-8 rounded-3xl relative hover-lift">
+                    <div class="absolute -top-4 -left-2 text-7xl font-serif text-pink-500/30 leading-none">"</div>
+                    <div class="relative">
+                        <div class="text-amber-400 text-sm mb-4 flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <div>
-                            <h5 class="text-sm font-bold text-slate-900">Alejandra R.</h5>
-                            <span class="text-xs text-slate-500">Tour Puerto Cabello & Patanemo</span>
+                        <p class="text-slate-300 text-sm italic mb-6 leading-relaxed">
+                            Pensábamos que conocíamos Puerto Cabello, pero caminar la zona colonial y el Puente de los Españoles con un guía profesional que te narra la historia con tanta emoción cambió todo por completo.
+                        </p>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold text-sm">
+                                AR
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-bold text-white">Alejandra R.</h5>
+                                <span class="text-xs text-slate-400">Tour Puerto Cabello & Patanemo</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Testimonial 2 -->
-                <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100 relative">
-                    <div class="text-pink-500 text-sm mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-slate-600 text-sm italic mb-6">
-                        "La logística en Isla Larga fue impecable: la lancha a tiempo, el refrigerio y el respeto por los arrecifes. Se nota cuando hay formación turística de verdad."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-bold text-sm">
-                            MG
+                <div class="gradient-border p-8 rounded-3xl relative hover-lift">
+                    <div class="absolute -top-4 -left-2 text-7xl font-serif text-cyan-400/30 leading-none">"</div>
+                    <div class="relative">
+                        <div class="text-amber-400 text-sm mb-4 flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <div>
-                            <h5 class="text-sm font-bold text-slate-900">Mauricio González</h5>
-                            <span class="text-xs text-slate-500">Viaje en Familia</span>
+                        <p class="text-slate-300 text-sm italic mb-6 leading-relaxed">
+                            La logística en Isla Larga fue impecable: la lancha a tiempo, el refrigerio y el respeto por los arrecifes. Se nota cuando hay formación turística de verdad.
+                        </p>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                                MG
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-bold text-white">Mauricio González</h5>
+                                <span class="text-xs text-slate-400">Viaje en Familia</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Testimonial 3 -->
-                <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100 relative">
-                    <div class="text-pink-500 text-sm mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-slate-600 text-sm italic mb-6">
-                        "Nos organizaron una sorpresa para nuestro aniversario en la Colonia Tovar y Waraira Repano. Todo con excelente trato y calidez humana. Totalmente recomendados."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 font-bold text-sm">
-                            VE
+                <div class="gradient-border p-8 rounded-3xl relative hover-lift">
+                    <div class="absolute -top-4 -left-2 text-7xl font-serif text-amber-400/30 leading-none">"</div>
+                    <div class="relative">
+                        <div class="text-amber-400 text-sm mb-4 flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <div>
-                            <h5 class="text-sm font-bold text-slate-900">Valeria & Esteban</h5>
-                            <span class="text-xs text-slate-500">Escapada en Pareja</span>
+                        <p class="text-slate-300 text-sm italic mb-6 leading-relaxed">
+                            Nos organizaron una sorpresa para nuestro aniversario en la Colonia Tovar y Waraira Repano. Todo con excelente trato y calidez humana. Totalmente recomendados.
+                        </p>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm">
+                                VE
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-bold text-white">Valeria & Esteban</h5>
+                                <span class="text-xs text-slate-400">Escapada en Pareja</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -758,71 +1111,104 @@
         </div>
     </section>
 
-    <footer class="bg-slate-950 text-white pt-16 pb-12 border-t border-slate-900">
+    <!-- ============ CTA FINAL ============ -->
+    <section class="relative py-32 overflow-hidden bg-brand-ink">
+        <!-- Background image with overlay -->
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1920&auto=format&fit=crop" alt="" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-ink via-brand-ink/70 to-brand-ink"></div>
+        </div>
+        <div class="absolute inset-0">
+            <div class="blob" style="background: #ff2d6f; width: 400px; height: 400px; top: 10%; left: 10%; opacity: 0.3;"></div>
+            <div class="blob" style="background: #06e0ff; width: 350px; height: 350px; bottom: 10%; right: 10%; opacity: 0.25; animation-delay: -8s;"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 reveal">
+            <h2 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-white leading-tight">
+                Tu próxima historia
+                <span class="block italic text-gradient mt-2">comienza hoy</span>
+            </h2>
+            <p class="max-w-2xl mx-auto text-slate-300 text-base sm:text-lg mt-6 leading-relaxed">
+                Conversemos sobre tu viaje soñado por Venezuela. Asesoría inmediata, sin compromiso y con la calidez humana que nos caracteriza.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="toggleContactModal()" class="cta-glow w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:scale-105 active:scale-95 transition-transform text-white font-bold text-sm uppercase tracking-[0.2em] shadow-2xl shadow-pink-500/40 flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Hablemos por WhatsApp</span>
+                </button>
+                <a href="#cotizador" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-pen text-cyan-300"></i>
+                    <span>Diseñar mi Itinerario</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-brand-ink pt-20 pb-12 border-t border-white/5 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
-                <!-- Col 1: Brand Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/5">
+                <!-- Col 1: Brand -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-blue-600 flex items-center justify-center text-white">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-pink-500/30">
                             <i class="fa-solid fa-sun"></i>
                         </div>
-                        <span class="text-lg font-bold">Turismo Experiencial</span>
+                        <span class="text-lg font-bold font-display">Turismo Experiencial</span>
                     </div>
                     <p class="text-slate-400 text-xs leading-relaxed">
                         Servicio de guiatura turística profesional especializada. Creación de memorias y vivencias auténticas en las maravillas naturales e históricas de Venezuela.
                     </p>
                     <div class="text-xs text-pink-400 font-semibold">
-                        Sede Operativa: Puerto Cabello / Carabobo, Venezuela.
+                        <i class="fa-solid fa-location-dot mr-1"></i> Sede Operativa: Puerto Cabello / Carabobo, Venezuela.
                     </div>
                 </div>
 
-                <!-- Col 2: Destinos Destacados -->
+                <!-- Col 2: Destinos -->
                 <div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Destinos Destacados</h4>
-                    <ul class="space-y-2 text-xs text-slate-400">
-                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors">Zona Colonial y Fortines de Puerto Cabello</a></li>
-                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors">Puente de los Españoles & P.N. San Esteban</a></li>
-                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors">Bahía de Patanemo & Cayo Isla Larga</a></li>
-                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors">Campo Histórico de Carabobo</a></li>
-                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors">Colonia Tovar & Waraira Repano</a></li>
-                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors">Expedición Isla La Tortuga</a></li>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-[0.2em] mb-5">Destinos Destacados</h4>
+                    <ul class="space-y-3 text-xs text-slate-400">
+                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-pink-500/60"></i> Zona Colonial y Fortines de Puerto Cabello</a></li>
+                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-pink-500/60"></i> Puente de los Españoles & P.N. San Esteban</a></li>
+                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-pink-500/60"></i> Bahía de Patanemo & Cayo Isla Larga</a></li>
+                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-pink-500/60"></i> Campo Histórico de Carabobo</a></li>
+                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-pink-500/60"></i> Colonia Tovar & Waraira Repano</a></li>
+                        <li><a href="#destinos" class="hover:text-pink-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-pink-500/60"></i> Expedición Isla La Tortuga</a></li>
                     </ul>
                 </div>
 
-                <!-- Col 3: Contacto Directo WhatsApp -->
+                <!-- Col 3: WhatsApp -->
                 <div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Líneas de Atención</h4>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-[0.2em] mb-5">Líneas de Atención</h4>
                     <div class="space-y-3">
-                        <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Deseo%20información%20sobre%20sus%20servicios%20de%20guiatura" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 hover:bg-slate-800 transition-all border border-slate-800 group">
-                            <div class="w-8 h-8 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
-                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Deseo%20información%20sobre%20sus%20servicios%20de%20guiatura" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-pink-500/10 transition-all border border-white/10 group">
+                            <div class="w-9 h-9 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
+                                <i class="fa-brands fa-whatsapp"></i>
                             </div>
                             <div>
-                                <span class="block text-[11px] text-slate-400">Línea Principal 1</span>
-                                <span class="text-xs font-bold text-slate-200">+58 414-1448515</span>
+                                <span class="block text-[11px] text-slate-500">Línea Principal 1</span>
+                                <span class="text-xs font-bold text-slate-100">+58 414-1448515</span>
                             </div>
                         </a>
-
-                        <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Deseo%20conocer%20sus%20paquetes%20turísticos" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 hover:bg-slate-800 transition-all border border-slate-800 group">
-                            <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
-                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Deseo%20conocer%20sus%20paquetes%20turísticos" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-cyan-500/10 transition-all border border-white/10 group">
+                            <div class="w-9 h-9 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                                <i class="fa-brands fa-whatsapp"></i>
                             </div>
                             <div>
-                                <span class="block text-[11px] text-slate-400">Línea Principal 2</span>
-                                <span class="text-xs font-bold text-slate-200">+58 412-0425563</span>
+                                <span class="block text-[11px] text-slate-500">Línea Principal 2</span>
+                                <span class="text-xs font-bold text-slate-100">+58 412-0425563</span>
                             </div>
                         </a>
                     </div>
                 </div>
 
-                <!-- Col 4: Compromiso de Calidad -->
+                <!-- Col 4: Compromiso -->
                 <div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Compromiso Seguro</h4>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-[0.2em] mb-5">Compromiso Seguro</h4>
                     <p class="text-xs text-slate-400 leading-relaxed mb-4">
                         Turismo sostenible, sin dejar huella ecológica perjudicial, con total apego a las directrices de preservación patrimonial de la República Bolivariana de Venezuela.
                     </p>
-                    <div class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-semibold">
+                    <div class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-semibold">
                         <i class="fa-solid fa-leaf"></i> Ecoturismo Consciente
                     </div>
                 </div>
@@ -832,7 +1218,7 @@
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
                 <p>© 2026 Guiatura Turística Especializada. Todos los derechos reservados.</p>
                 <div class="flex gap-4">
-                    <span>Puerto Cabello, Venezuela</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-pink-500/60"></i> Puerto Cabello, Venezuela</span>
                     <span>•</span>
                     <span>Experiencias Inolvidables</span>
                 </div>
@@ -840,84 +1226,83 @@
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Bubble -->
+    <!-- ============ FLOATING WHATSAPP ============ -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
-        <!-- Optional Quick Sub-buttons that pop up -->
         <div id="quickChatPills" class="hidden flex flex-col gap-2 transition-all">
-            <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Me%20gustaría%20información%20sobre%20una%20guiatura" target="_blank" class="px-4 py-2 rounded-full bg-white shadow-xl border border-slate-200 text-slate-800 text-xs font-bold flex items-center gap-2 hover:bg-pink-50 transition-all">
+            <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Me%20gustaría%20información%20sobre%20una%20guiatura" target="_blank" class="px-4 py-2.5 rounded-full bg-white shadow-2xl border border-white/20 text-slate-900 text-xs font-bold flex items-center gap-2 hover:bg-pink-50 transition-all">
                 <i class="fa-brands fa-whatsapp text-green-500"></i> +58 414-1448515
             </a>
-            <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Me%20gustaría%20información%20sobre%20sus%20viajes" target="_blank" class="px-4 py-2 rounded-full bg-white shadow-xl border border-slate-200 text-slate-800 text-xs font-bold flex items-center gap-2 hover:bg-blue-50 transition-all">
+            <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Me%20gustaría%20información%20sobre%20sus%20viajes" target="_blank" class="px-4 py-2.5 rounded-full bg-white shadow-2xl border border-white/20 text-slate-900 text-xs font-bold flex items-center gap-2 hover:bg-cyan-50 transition-all">
                 <i class="fa-brands fa-whatsapp text-green-500"></i> +58 412-0425563
             </a>
         </div>
-
-        <button onclick="toggleQuickWhatsApp()" class="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-green-500/50 hover:scale-110 active:scale-95 transition-all">
-            <i class="fa-brands fa-whatsapp"></i>
+        <button onclick="toggleQuickWhatsApp()" class="relative w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-green-500/50 hover:scale-110 active:scale-95 transition-all">
+            <span class="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-30"></span>
+            <i class="fa-brands fa-whatsapp relative"></i>
         </button>
     </div>
 
-    <!-- Contact Picker Modal -->
-    <div id="contactModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-green-500 text-xl"></i> Elige un Asesor de Viaje
-                </h3>
-                <button onclick="toggleContactModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
-                    <i class="fa-solid fa-xmark"></i>
+    <!-- ============ CONTACT MODAL ============ -->
+    <div id="contactModal" class="fixed inset-0 z-50 bg-brand-ink/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-brand-night rounded-3xl max-w-md w-full p-6 shadow-2xl border border-white/10 transform transition-all relative overflow-hidden">
+            <div class="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-pink-500/20 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none"></div>
+            <div class="relative">
+                <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2 font-display">
+                        <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i> Elige un Asesor de Viaje
+                    </h3>
+                    <button onclick="toggleContactModal()" class="w-8 h-8 rounded-full bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-400 my-4 leading-relaxed">
+                    Ambas líneas están atendidas por profesionales listos para coordinar itinerarios, costos y logística para tus fechas deseadas.
+                </p>
+                <div class="space-y-3">
+                    <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Vengo%20desde%20su%20página%20web%20y%20quiero%20recibir%20asesoría%20turística" target="_blank" class="p-4 rounded-2xl border border-pink-500/30 bg-pink-500/10 hover:bg-pink-500/20 transition-all flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 text-white flex items-center justify-center font-bold shadow-lg shadow-pink-500/30">
+                                <i class="fa-solid fa-compass"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-white">WhatsApp Asesoría 1</span>
+                                <span class="text-xs text-pink-300 font-semibold">+58 414-1448515</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-400 group-hover:translate-x-1 group-hover:text-pink-400 transition-transform"></i>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Vengo%20desde%20su%20página%20web%20y%20deseo%20planificar%20un%20viaje" target="_blank" class="p-4 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 transition-all flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center font-bold shadow-lg shadow-cyan-500/30">
+                                <i class="fa-solid fa-map"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-white">WhatsApp Asesoría 2</span>
+                                <span class="text-xs text-cyan-300 font-semibold">+58 412-0425563</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-400 group-hover:translate-x-1 group-hover:text-cyan-400 transition-transform"></i>
+                    </a>
+                </div>
+                <button onclick="toggleContactModal()" class="w-full mt-5 py-3 rounded-xl bg-white/5 text-slate-300 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/10 transition-colors">
+                    Cerrar
                 </button>
             </div>
-            
-            <p class="text-xs text-slate-600 my-4">
-                Ambas líneas están atendidas por profesionales listos para coordinar itinerarios, costos y logística para tus fechas deseadas.
-            </p>
-
-            <div class="space-y-3">
-                <a href="https://api.whatsapp.com/send?phone=584141448515&text=Hola!%20Vengo%20desde%20su%20página%20web%20y%20quiero%20recibir%20asesoría%20turística" target="_blank" class="p-4 rounded-2xl border border-pink-100 bg-pink-50/50 hover:bg-pink-100/70 transition-all flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-pink-500 text-white flex items-center justify-center font-bold">
-                            <i class="fa-solid fa-compass"></i>
-                        </div>
-                        <div>
-                            <span class="block text-xs font-bold text-slate-900">WhatsApp Asesoría 1</span>
-                            <span class="text-xs text-pink-600 font-semibold">+58 414-1448515</span>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                </a>
-
-                <a href="https://api.whatsapp.com/send?phone=584120425563&text=Hola!%20Vengo%20desde%20su%20página%20web%20y%20deseo%20planificar%20un%20viaje" target="_blank" class="p-4 rounded-2xl border border-blue-100 bg-blue-50/50 hover:bg-blue-100/70 transition-all flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold">
-                            <i class="fa-solid fa-map"></i>
-                        </div>
-                        <div>
-                            <span class="block text-xs font-bold text-slate-900">WhatsApp Asesoría 2</span>
-                            <span class="text-xs text-blue-600 font-semibold">+58 412-0425563</span>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
-
-            <button onclick="toggleContactModal()" class="w-full mt-5 py-3 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider hover:bg-slate-200 transition-colors">
-                Cerrar
-            </button>
         </div>
     </div>
 
-    <!-- Notification Toast Box -->
-    <div id="toastNotification" class="fixed top-24 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 translate-y-[-150%] transition-transform duration-300 pointer-events-none">
+    <!-- ============ TOAST ============ -->
+    <div id="toastNotification" class="fixed top-24 right-6 z-50 bg-brand-night text-white px-5 py-3 rounded-2xl shadow-2xl border border-pink-500/30 flex items-center gap-3 translate-y-[-150%] transition-transform duration-300 pointer-events-none">
         <i class="fa-solid fa-circle-check text-pink-400 text-lg"></i>
         <div>
             <div class="text-xs font-bold" id="toastTitle">Destino Seleccionado</div>
-            <div class="text-[11px] text-slate-300" id="toastMessage">Abriendo planificador...</div>
+            <div class="text-[11px] text-slate-400" id="toastMessage">Abriendo planificador...</div>
         </div>
     </div>
 
     <script>
-        // Toggle mobile drawer navigation
+        // ============ Mobile menu ============
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileDrawer = document.getElementById('mobileDrawer');
         const menuIcon = document.getElementById('menuIcon');
@@ -938,7 +1323,7 @@
             menuIcon.className = 'fa-solid fa-bars text-xl';
         }
 
-        // Toggle Quick Contact Modal
+        // ============ Contact modal ============
         function toggleContactModal() {
             const modal = document.getElementById('contactModal');
             if (modal.classList.contains('hidden')) {
@@ -950,13 +1335,13 @@
             }
         }
 
-        // Floating WhatsApp speed-dial buttons
+        // ============ Quick WhatsApp pills ============
         function toggleQuickWhatsApp() {
             const pills = document.getElementById('quickChatPills');
             pills.classList.toggle('hidden');
         }
 
-        // Toast feedback handler
+        // ============ Toast ============
         function showToast(title, message) {
             const toast = document.getElementById('toastNotification');
             document.getElementById('toastTitle').textContent = title;
@@ -967,54 +1352,44 @@
             }, 3000);
         }
 
-        // Filter destinations grid by category
-        function filterDestinations(category) {
+        // ============ Filter destinations ============
+        function filterDestinations(category, evt) {
             const cards = document.querySelectorAll('.destination-card');
             const buttons = document.querySelectorAll('.filter-btn');
 
-            buttons.forEach(btn => {
-                btn.classList.remove('bg-pink-500', 'text-white');
-                btn.classList.add('bg-white', 'text-slate-700');
-            });
-
-            event.currentTarget.classList.remove('bg-white', 'text-slate-700');
-            event.currentTarget.classList.add('bg-pink-500', 'text-white');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            evt.currentTarget.classList.add('active');
 
             cards.forEach(card => {
                 const cats = card.getAttribute('data-category');
                 if (category === 'todos' || cats.includes(category)) {
                     card.style.display = 'flex';
+                    card.style.opacity = '0';
+                    setTimeout(() => { card.style.opacity = '1'; card.style.transition = 'opacity 0.4s'; }, 50);
                 } else {
                     card.style.display = 'none';
                 }
             });
         }
 
-        // Select a destination directly into the trip planner
+        // ============ Booking shortcut ============
         function openBookingFor(destinationName) {
             const selectElem = document.getElementById('formDestino');
-            let found = false;
-
             for (let i = 0; i < selectElem.options.length; i++) {
                 if (selectElem.options[i].value.toLowerCase().includes(destinationName.toLowerCase()) ||
                     selectElem.options[i].text.toLowerCase().includes(destinationName.toLowerCase())) {
                     selectElem.selectedIndex = i;
-                    found = true;
                     break;
                 }
             }
-
-            // Scroll down to the planner section
             const planner = document.getElementById('cotizador');
             planner.scrollIntoView({ behavior: 'smooth' });
-
             showToast('Destino Listo', `Cargando ${destinationName} en tu planificador`);
         }
 
-        // Handle planner submit and compile WhatsApp text
+        // ============ Trip planner submit ============
         function handleTripPlannerSubmit(e) {
             e.preventDefault();
-
             const destino = document.getElementById('formDestino').value;
             const personas = document.getElementById('formPersonas').value;
             const enfoque = document.getElementById('formEnfoque').value;
@@ -1025,28 +1400,139 @@
             message += `📍 *Destino:* ${encodeURIComponent(destino)}%0A`;
             message += `👥 *Viajeros:* ${encodeURIComponent(personas)}%0A`;
             message += `✨ *Enfoque:* ${encodeURIComponent(enfoque)}%0A`;
-
             if (detalle) {
                 message += `📝 *Notas adicionales:* ${encodeURIComponent(detalle)}%0A`;
             }
-
             message += `%0A¿Podrían indicarme fechas disponibles y propuesta detallada? ¡Gracias!`;
 
             const finalUrl = `https://api.whatsapp.com/send?phone=${linea}&text=${message}`;
-
             showToast('Conectando con Asesor', 'Redirigiendo a tu WhatsApp...');
             setTimeout(() => {
                 window.open(finalUrl, '_blank');
             }, 700);
         }
 
-        // Dynamic background smooth scroll indicator
+        // ============ Scroll progress + navbar effect ============
+        const navbar = document.getElementById('navbar');
+        const scrollProgress = document.getElementById('scrollProgress');
+        const heroBg = document.getElementById('heroBg');
+
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 40) {
-                navbar.classList.add('shadow-md');
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = progress + '%';
+
+            if (scrollTop > 40) {
+                navbar.classList.add('scrolled');
             } else {
-                navbar.classList.remove('shadow-md');
+                navbar.classList.remove('scrolled');
+            }
+
+            // Parallax on hero image
+            if (scrollTop < window.innerHeight && heroBg) {
+                heroBg.style.transform = `scale(1.05) translateY(${scrollTop * 0.3}px)`;
+            }
+        });
+
+        // ============ Scroll reveal animations ============
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Trigger counter animation when stats are visible
+                    if (entry.target.querySelector('.counter') || entry.target.classList.contains('counter')) {
+                        const counters = entry.target.classList.contains('counter') ? [entry.target] : entry.target.querySelectorAll('.counter');
+                        counters.forEach(animateCounter);
+                    }
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+
+        // ============ Counter animation ============
+        function animateCounter(elem) {
+            if (elem.dataset.animated) return;
+            elem.dataset.animated = 'true';
+            const target = parseInt(elem.dataset.target);
+            const suffix = elem.dataset.suffix || '';
+            const prefix = elem.dataset.prefix || '';
+            const duration = 1800;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(eased * target);
+                elem.textContent = prefix + current + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    elem.textContent = prefix + target + suffix;
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ============ Cursor blob follower ============
+        const cursorBlob = document.getElementById('cursorBlob');
+        let mouseX = 0, mouseY = 0, blobX = 0, blobY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function updateCursor() {
+            blobX += (mouseX - blobX) * 0.18;
+            blobY += (mouseY - blobY) * 0.18;
+            cursorBlob.style.left = blobX + 'px';
+            cursorBlob.style.top = blobY + 'px';
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        // Grow on hoverable elements
+        document.querySelectorAll('a, button, .tilt-card, input, select').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorBlob.style.width = '50px';
+                cursorBlob.style.height = '50px';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorBlob.style.width = '24px';
+                cursorBlob.style.height = '24px';
+            });
+        });
+
+        // ============ 3D Tilt effect on destination cards ============
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // ============ Click outside modal to close ============
+        document.getElementById('contactModal').addEventListener('click', (e) => {
+            if (e.target.id === 'contactModal') toggleContactModal();
+        });
+
+        // ============ ESC key closes modal ============
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('contactModal');
+                if (!modal.classList.contains('hidden')) toggleContactModal();
             }
         });
     </script>
